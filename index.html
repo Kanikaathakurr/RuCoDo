@@ -7,9 +7,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/base.css"/>
-  <link rel="stylesheet" href="css/components.css"/>
-  <link rel="stylesheet" href="css/animations.css"/>
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/animations.css" />
 </head>
 <body>
 
@@ -34,6 +34,7 @@
         </div>
         <div class="brand-text">
           <span class="brand-name">RuCoDo</span>
+          <span class="brand-sub">NIT Hamirpur Ground Run</span>
         </div>
       </div>
       <h1 class="splash-headline">Run.<br/>Compete.<br/>Dominate.</h1>
@@ -55,22 +56,22 @@
     </div>
     <div class="form-screen">
       <div class="form-hero">
-        <div class="avatar-picker" id="avatar-display">KT</div>
+        <div class="avatar-picker" id="avatar-display">AK</div>
         <p class="form-hint">Your campus runner identity</p>
       </div>
       <div class="form-group">
         <label>Full Name</label>
-        <input type="text" id="reg-name" placeholder="e.g. Kanika Thakur" autocomplete="off" />
+        <input type="text" id="reg-name" placeholder="e.g. Aditya Kumar" autocomplete="off" />
       </div>
       <div class="form-group">
         <label>Roll Number</label>
-        <input type="text" id="reg-roll" placeholder="e.g. 23BEC048" autocomplete="off" />
+        <input type="text" id="reg-roll" placeholder="e.g. 21BCS001" autocomplete="off" />
       </div>
       <div class="form-group">
         <label>Branch</label>
         <select id="reg-branch">
           <option value="">Select branch</option>
-          <option>CSE</option><option>ECE</option><option>EP</option><option>MNC</option><option>EE</option>
+          <option>CSE</option><option>ECE</option><option>EE</option>
           <option>ME</option><option>Civil</option><option>Chemical</option>
           <option>Material Science</option>
         </select>
@@ -85,7 +86,11 @@
           <button class="pill" data-val="5">5th</button>
         </div>
       </div>
-      <button class="btn-primary" onclick="App.register()">Join the Run</button>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="reg-password" placeholder="Min 6 characters" />
+      </div>
+      <button class="btn-primary" id="reg-submit" data-label="JOIN THE RACE" onclick="App.register()">JOIN THE RACE</button>
     </div>
   </div>
 
@@ -109,9 +114,13 @@
       </div>
       <div class="form-group">
         <label>Roll Number</label>
-        <input type="text" id="login-roll" placeholder="e.g. 23BEC048" autocomplete="off" />
+        <input type="text" id="login-roll" placeholder="e.g. 21BCS001" autocomplete="off" />
       </div>
-      <button class="btn-primary" onclick="App.login()">Let's Run</button>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="login-password" placeholder="Your password" />
+      </div>
+      <button class="btn-primary" id="login-submit" data-label="LET'S RUN" onclick="App.login()">LET'S RUN</button>
       <p class="form-note">Don't have an account? <a href="#" onclick="App.goTo('register');return false">Register here</a></p>
     </div>
   </div>
@@ -122,10 +131,10 @@
     <!-- Top bar -->
     <header class="app-header">
       <div class="app-header-left">
-        <div class="user-avatar-sm" id="header-avatar">KT</div>
+        <div class="user-avatar-sm" id="header-avatar">AK</div>
         <div class="user-info-sm">
-          <span class="user-name-sm" id="header-name">Kanika Thakur</span>
-          <span class="user-meta-sm" id="header-meta">ECE · 3rd Year</span>
+          <span class="user-name-sm" id="header-name">Aditya Kumar</span>
+          <span class="user-meta-sm" id="header-meta">CSE · 2nd Year</span>
         </div>
       </div>
       <div class="app-header-right">
@@ -253,9 +262,9 @@
     <div id="page-stats" class="page">
       <div class="page-scroll">
         <div class="stats-hero">
-          <div class="stats-avatar" id="stats-avatar">KT</div>
+          <div class="stats-avatar" id="stats-avatar">AK</div>
           <div class="stats-name" id="stats-name">Runner</div>
-          <div class="stats-meta" id="stats-meta">ECE · NIT Hamirpur</div>
+          <div class="stats-meta" id="stats-meta">CSE · NIT Hamirpur</div>
         </div>
         <div class="stats-grid">
           <div class="stat-tile big">
@@ -340,6 +349,7 @@
 
   <div id="toast" class="toast"></div>
 
+  <script src="js/api.js"></script>
   <script src="js/storage.js"></script>
   <script src="js/data.js"></script>
   <script src="js/run.js"></script>
