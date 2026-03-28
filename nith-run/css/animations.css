@@ -1,0 +1,106 @@
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+
+   @keyframes slideIn {
+    from { opacity: 0; transform: translateY(-8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+  
+  @keyframes scaleIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+  
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%       { opacity: 0.5; transform: scale(0.92); }
+  }
+  
+  @keyframes pulseDot {
+    0%, 100% { r: 7; opacity: 0.5; }
+    50%       { r: 12; opacity: 0; }
+  }
+  
+  @keyframes spinRing {
+    from { transform: rotate(-90deg); }
+    to   { transform: rotate(270deg); }
+  }
+  
+  @keyframes lapFlash {
+    0%   { background: var(--green-glow); border-color: var(--green-dim); }
+    50%  { background: rgba(109,179,109,0.3); border-color: var(--green); }
+    100% { background: var(--bg-card); border-color: var(--border); }
+  }
+  
+  @keyframes countUp {
+    from { transform: translateY(10px); opacity: 0; }
+    to   { transform: translateY(0); opacity: 1; }
+  }
+  
+  @keyframes trailFade {
+    from { opacity: 0.6; }
+    to   { opacity: 0.1; }
+  }
+  
+  /* Screen transitions */
+  .screen { animation: fadeIn 0.25s ease; }
+  
+  /* Running state for run-card */
+  .run-card.running {
+    border-color: var(--green-dim);
+    box-shadow: 0 0 0 1px var(--border-strong);
+  }
+  
+  /* Ring active color */
+  .ring-track.running {
+    stroke: var(--green);
+  }
+  
+  /* Lap number update */
+  .ring-laps.updated {
+    animation: countUp 0.3s ease;
+  }
+  
+  /* Today number pulse on new lap */
+  .today-number.flash {
+    animation: countUp 0.25s ease;
+  }
+  
+  /* GPS active dot */
+  .gps-dot.active {
+    animation: pulse 1.5s ease infinite;
+  }
+  
+  /* Leaderboard row entrance */
+  .lb-row {
+    animation: slideIn 0.2s ease both;
+  }
+  .lb-row:nth-child(1) { animation-delay: 0ms; }
+  .lb-row:nth-child(2) { animation-delay: 40ms; }
+  .lb-row:nth-child(3) { animation-delay: 80ms; }
+  .lb-row:nth-child(4) { animation-delay: 120ms; }
+  .lb-row:nth-child(5) { animation-delay: 160ms; }
+  .lb-row:nth-child(6) { animation-delay: 200ms; }
+  .lb-row:nth-child(7) { animation-delay: 240ms; }
+  .lb-row:nth-child(8) { animation-delay: 280ms; }
+  .lb-row:nth-child(9) { animation-delay: 320ms; }
+  
+  /* Stat tiles entrance */
+  .stat-tile {
+    animation: scaleIn 0.3s ease both;
+  }
+  .stat-tile:nth-child(1) { animation-delay: 0ms; }
+  .stat-tile:nth-child(2) { animation-delay: 50ms; }
+  .stat-tile:nth-child(3) { animation-delay: 100ms; }
+  .stat-tile:nth-child(4) { animation-delay: 150ms; }
+  
+  /* Splash rings rotate slowly */
+  .ring.r1 { animation: spinRing 40s linear infinite; }
+  .ring.r2 { animation: spinRing 60s linear infinite reverse; }
+  .ring.r3 { animation: spinRing 80s linear infinite; }
