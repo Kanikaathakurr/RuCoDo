@@ -1,4 +1,4 @@
-/* js/run.js — Real GPS tracking, lap detection, Strava-style trail, backend save */
+/* js/run.js — Real GPS tracking, lap detection, backend save */
 const Run = (() => {
 
   let state = {
@@ -9,7 +9,6 @@ const Run = (() => {
     lapProgress: 0,
     timerInterval: null,
     animFrame: null,
-    angle: 0,
     lapTimes: [],
     gpsTrail: [],
     splits: [],
@@ -20,7 +19,6 @@ const Run = (() => {
   };
 
   const LAP_DISTANCE_M = 400;
-  const MAP = { cx: 170, cy: 100, rx: 148, ry: 82 };
   const $ = id => document.getElementById(id);
 
   function haversine(lat1, lng1, lat2, lng2) {
@@ -31,17 +29,6 @@ const Run = (() => {
     const a = Math.sin(dLat/2)**2 +
               Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLng/2)**2;
     return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  }
-
-  const BOUNDS = {
-    minLat: 31.705213, maxLat: 31.706976,
-    minLng: 76.524073, maxLng: 76.525678,
-  };
-
-  function gpsToSvg(lat, lng) {
-    const x = MAP.cx - MAP.rx + ((lng - BOUNDS.minLng) / (BOUNDS.maxLng - BOUNDS.minLng)) * (MAP.rx * 2);
-    const y = MAP.cy + MAP.ry - ((lat - BOUNDS.minLat) / (BOUNDS.maxLat - BOUNDS.minLat)) * (MAP.ry * 2);
-    return { x: parseFloat(x.toFixed(2)), y: parseFloat(y.toFixed(2)) };
   }
 
   function toggle() {
@@ -65,7 +52,6 @@ const Run = (() => {
     state.distanceCovered = 0;
     state.totalDistance = 0;
     state.lastPos = null;
-    state.angle = 0;
 
     $('run-toggle').classList.add('running');
     $('run-toggle-label').textContent = 'STOP';
@@ -75,8 +61,8 @@ const Run = (() => {
     $('gps-dot').classList.add('active');
     $('gps-text').textContent = 'Acquiring GPS...';
     $('lp-label').textContent = 'Lap 1 in progress';
-    $('map-trail').setAttribute('d', '');
 
+    MapView.resetTrail();
     updateRing(0, 0);
     state.timerInterval = setInterval(tickTimer, 1000);
 
@@ -86,7 +72,6 @@ const Run = (() => {
       { enableHighAccuracy: true, maximumAge: 0, timeout: 10000 }
     );
 
-    animateRunner();
     showToast('Run started! Go go go!');
   }
 
@@ -97,6 +82,9 @@ const Run = (() => {
 
     $('gps-text').textContent = 'GPS active · +/-' + Math.round(pos.coords.accuracy) + 'm';
     state.gpsTrail.push({ lat, lng, timestamp });
+
+    /* Update real map */
+    MapView.updateRunner(lat, lng);
 
     if (state.lastPos) {
       const dist = haversine(state.lastPos.lat, state.lastPos.lng, lat, lng);
@@ -109,35 +97,15 @@ const Run = (() => {
       $('lap-bar-fill').style.width = Math.round(progress) + '%';
       $('lp-pct').textContent = Math.round(progress) + '%';
 
-      if (state.distanceCovered >= LAP_DISTANCE_M) {
-        completeLap();
-      }
+      if (state.distanceCovered >= LAP_DISTANCE_M) completeLap();
     }
 
     state.lastPos = { lat, lng };
-    updateMapWithGPS(lat, lng);
   }
 
   function onGpsError(err) {
     console.warn('GPS error:', err.message);
     $('gps-text').textContent = 'GPS signal weak — move to open area';
-  }
-
-  function updateMapWithGPS(lat, lng) {
-    const { x, y } = gpsToSvg(lat, lng);
-    const dot   = $('map-runner');
-    const pulse = $('map-runner-pulse');
-    if (dot)   { dot.setAttribute('cx', x);   dot.setAttribute('cy', y); }
-    if (pulse) { pulse.setAttribute('cx', x); pulse.setAttribute('cy', y); }
-
-    const trail = $('map-trail');
-    if (trail && state.gpsTrail.length > 1) {
-      const points = state.gpsTrail.map(p => {
-        const sv = gpsToSvg(p.lat, p.lng);
-        return sv.x + ',' + sv.y;
-      });
-      trail.setAttribute('d', 'M ' + points.join(' L '));
-    }
   }
 
   function completeLap() {
@@ -230,60 +198,14 @@ const Run = (() => {
       App.refreshHeader(profile.user);
       Stats.refresh();
 
-      if (state.gpsTrail.length > 5 && result.run && result.run._id) {
-        showTrailReplay(result.run._id);
+      /* Strava-style trail replay on real map */
+      if (state.gpsTrail.length > 5) {
+        MapView.replayTrail(state.gpsTrail);
       }
 
     } catch (err) {
       showToast('Could not save run: ' + err.message);
     }
-  }
-
-  async function showTrailReplay(runId) {
-    try {
-      const { trail } = await API.getTrail(runId);
-      if (!trail || trail.length < 2) return;
-
-      showToast('Replaying your run trail!');
-      const mapTrail = $('map-trail');
-      mapTrail.setAttribute('d', '');
-
-      let i = 0;
-      const step = () => {
-        if (i >= trail.length) return;
-        const chunk = trail.slice(0, i + 1);
-        const points = chunk.map(p => {
-          const sv = gpsToSvg(p.lat, p.lng);
-          return sv.x + ',' + sv.y;
-        });
-        mapTrail.setAttribute('d', 'M ' + points.join(' L '));
-
-        const dot = $('map-runner');
-        const sv = gpsToSvg(trail[i].lat, trail[i].lng);
-        if (dot) { dot.setAttribute('cx', sv.x); dot.setAttribute('cy', sv.y); }
-
-        i++;
-        const delay = i < trail.length
-          ? Math.min((trail[i].timestamp - trail[i-1].timestamp) / 20, 80)
-          : 0;
-        setTimeout(step, delay);
-      };
-      step();
-    } catch (e) {
-      console.warn('Trail replay failed:', e.message);
-    }
-  }
-
-  function animateRunner() {
-    if (!state.running) return;
-    if (!state.lastPos) {
-      state.angle -= 0.018;
-      const x = MAP.cx + MAP.rx * Math.cos(state.angle);
-      const y = MAP.cy + MAP.ry * Math.sin(state.angle);
-      const dot = $('map-runner');
-      if (dot) { dot.setAttribute('cx', x.toFixed(2)); dot.setAttribute('cy', y.toFixed(2)); }
-    }
-    state.animFrame = requestAnimationFrame(animateRunner);
   }
 
   function tickTimer() {
@@ -325,6 +247,11 @@ const Run = (() => {
     const cached = Storage.getCachedTodayLaps();
     $('today-big').textContent = cached;
     $('today-rank-label').textContent = 'Loading rank...';
+
+    /* Initialize map when track page loads */
+    MapView.init();
+    MapView.invalidate();
+
     try {
       const { daily } = await API.getMyRank();
       $('today-rank-label').textContent = daily.rank
@@ -335,5 +262,5 @@ const Run = (() => {
     }
   }
 
-  return { toggle, refreshTodayCount, showTrailReplay };
+  return { toggle, refreshTodayCount };
 })();

@@ -3,13 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-  <title>RuCoDo</title>
+  <title>NIT Hamirpur — Ground Run</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/base.css" />
   <link rel="stylesheet" href="css/components.css" />
   <link rel="stylesheet" href="css/animations.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 </head>
 <body>
 
@@ -33,8 +34,8 @@
           </svg>
         </div>
         <div class="brand-text">
-          <span class="brand-name">RuCoDo</span>
-          <span class="brand-sub">NIT Hamirpur Ground Run</span>
+          <span class="brand-name">GROUND RUN</span>
+          <span class="brand-sub">NIT HAMIRPUR</span>
         </div>
       </div>
       <h1 class="splash-headline">Run.<br/>Compete.<br/>Dominate.</h1>
@@ -142,12 +143,6 @@
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1c0 3-3 4-3 7a3 3 0 006 0c0-3-3-4-3-7z" fill="currentColor"/></svg>
           <span id="streak-count">0</span>
         </div>
-        <button class="btn-logout" onclick="App.logout()">
-          <svg width="14" height="14" viewBox="0 0 18 18" fill="none">
-            <path d="M7 16H3a1 1 0 01-1-1V3a1 1 0 011-1h4M12 13l4-4-4-4M16 9H7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-          </svg>
-          LOGOUT
-        </button>
       </div>
     </header>
 
@@ -205,35 +200,10 @@
           </div>
         </div>
 
-        <!-- Ground Map -->
+        <!-- Ground Map — OpenStreetMap via Leaflet -->
         <div class="map-card">
-          <div class="card-label">CAMPUS GROUND</div>
-          <div class="map-wrap">
-            <svg id="ground-map" viewBox="0 0 340 200" xmlns="http://www.w3.org/2000/svg">
-              <!-- Ground fill -->
-              <ellipse cx="170" cy="100" rx="155" ry="88" fill="#1a2a1a" opacity="0.6"/>
-              <!-- Outer track -->
-              <ellipse cx="170" cy="100" rx="148" ry="82" fill="none" stroke="#4a7c4a" stroke-width="8" opacity="0.3"/>
-              <!-- Running lane -->
-              <ellipse cx="170" cy="100" rx="148" ry="82" fill="none" stroke="#6db36d" stroke-width="3" stroke-dasharray="10 6" opacity="0.6"/>
-              <!-- Inner field -->
-              <ellipse cx="170" cy="100" rx="108" ry="58" fill="#1e351e" opacity="0.5"/>
-              <!-- Center circle -->
-              <circle cx="170" cy="100" r="22" fill="none" stroke="#4a7c4a" stroke-width="1.5" opacity="0.5"/>
-              <!-- Center line -->
-              <line x1="22" y1="100" x2="318" y2="100" stroke="#4a7c4a" stroke-width="1" stroke-dasharray="8 6" opacity="0.4"/>
-              <!-- Start/Finish marker -->
-              <rect x="314" y="90" width="6" height="20" rx="1" fill="#e8b84b"/>
-              <text x="304" y="86" font-family="'Barlow Condensed',sans-serif" font-size="9" fill="#e8b84b" text-anchor="middle">START</text>
-              <!-- Runner dot -->
-              <circle id="map-runner" cx="318" cy="100" r="7" fill="#ff4d2e"/>
-              <circle id="map-runner-pulse" cx="318" cy="100" r="7" fill="none" stroke="#ff4d2e" stroke-width="2" opacity="0.5"/>
-              <!-- Trail -->
-              <path id="map-trail" d="" fill="none" stroke="#ff4d2e" stroke-width="2" opacity="0.4" stroke-linecap="round"/>
-              <!-- Labels -->
-              <text x="170" y="104" font-family="'Barlow Condensed',sans-serif" font-size="11" fill="#4a7c4a" text-anchor="middle" opacity="0.7">400m</text>
-            </svg>
-          </div>
+          <div class="card-label">CAMPUS GROUND — NIT HAMIRPUR</div>
+          <div id="leaflet-map" class="leaflet-map-wrap"></div>
         </div>
 
         <!-- Recent laps -->
@@ -355,9 +325,11 @@
 
   <div id="toast" class="toast"></div>
 
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="js/api.js"></script>
   <script src="js/storage.js"></script>
   <script src="js/data.js"></script>
+  <script src="js/map.js"></script>
   <script src="js/run.js"></script>
   <script src="js/leaderboard.js"></script>
   <script src="js/stats.js"></script>
