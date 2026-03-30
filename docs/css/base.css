@@ -244,6 +244,8 @@
     background: var(--bg-primary);
   }
   .app-header-left { display: flex; align-items: center; gap: 10px; }
+  .app-header-right { display: flex; align-items: center; gap: 8px; }
+
   .user-avatar-sm {
     width: 34px;
     height: 34px;
