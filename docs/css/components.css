@@ -36,6 +36,25 @@
 }
 .btn-ghost:hover { background: var(--bg-card); color: var(--text-primary); }
 
+.btn-logout {
+  background: rgba(255, 77, 46, 0.1);
+  border: 1px solid rgba(255, 77, 46, 0.25);
+  border-radius: var(--radius);
+  color: var(--red);
+  cursor: pointer;
+  padding: 6px 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  font-family: var(--font-display);
+  letter-spacing: 1.5px;
+  transition: all 0.15s;
+  margin-left: 8px;
+}
+.btn-logout:hover { background: rgba(255, 77, 46, 0.25); }
+
 /* ---- FORMS ---- */
 .form-group {
   margin-bottom: 20px;
