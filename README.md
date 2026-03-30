@@ -1,10 +1,11 @@
-# 🏃 RuCoDo — NIT Hamirpur Ground Run
+# 🏃 RuCoDo — Ground Run NIT Hamirpur
 
 A gamified campus fitness web app for NIT Hamirpur students to track running laps around the college ground, compete on leaderboards, and build running streaks.
 
 ---
 
 ## 🌐 Live App
+
 **Frontend:** https://kanikaathakurr.github.io/RuCoDo/
 
 ---
@@ -25,21 +26,23 @@ A gamified campus fitness web app for NIT Hamirpur students to track running lap
 ## 🛠️ Tech Stack
 
 ### Frontend
-| Technology | Purpose |
-|---|---|
-| HTML / CSS / JavaScript | Core frontend — no framework |
-| Leaflet.js | Interactive map with OpenStreetMap tiles |
-| Geolocation API | Real GPS tracking |
-| GitHub Pages | Free frontend hosting |
+
+| Technology              | Purpose                                  |
+| ----------------------- | ---------------------------------------- |
+| HTML / CSS / JavaScript | Core frontend — no framework             |
+| Leaflet.js              | Interactive map with OpenStreetMap tiles |
+| Geolocation API         | Real GPS tracking                        |
+| GitHub Pages            | Free frontend hosting                    |
 
 ### Backend
-| Technology | Purpose |
-|---|---|
-| Node.js + Express | REST API server |
-| MongoDB + Mongoose | Database |
-| bcryptjs | Password hashing |
-| JSON Web Tokens (JWT) | Authentication |
-| Render.com | Free backend hosting |
+
+| Technology            | Purpose              |
+| --------------------- | -------------------- |
+| Node.js + Express     | REST API server      |
+| MongoDB + Mongoose    | Database             |
+| bcryptjs              | Password hashing     |
+| JSON Web Tokens (JWT) | Authentication       |
+| Render.com            | Free backend hosting |
 
 ---
 
@@ -84,10 +87,12 @@ RuCoDo/
 ## 🚀 Running Locally
 
 ### Prerequisites
+
 - Node.js installed
 - MongoDB Atlas account (free)
 
 ### Backend
+
 ```bash
 cd nith-run-backend
 npm install
@@ -98,6 +103,7 @@ npm run dev
 ```
 
 ### Frontend
+
 - Open `docs/index.html` with Live Server in VS Code
 - Or open directly in browser at `http://127.0.0.1:5500`
 
@@ -108,31 +114,35 @@ npm run dev
 ## 🔌 API Reference
 
 ### Auth
-| Method | Endpoint | Description |
-|---|---|---|
-| POST | `/api/auth/register` | Create new account |
-| POST | `/api/auth/login` | Login, returns JWT token |
-| GET | `/api/auth/me` | Get current user |
+
+| Method | Endpoint             | Description              |
+| ------ | -------------------- | ------------------------ |
+| POST   | `/api/auth/register` | Create new account       |
+| POST   | `/api/auth/login`    | Login, returns JWT token |
+| GET    | `/api/auth/me`       | Get current user         |
 
 ### Runs
-| Method | Endpoint | Description |
-|---|---|---|
-| POST | `/api/runs` | Save a completed run with GPS trail |
-| GET | `/api/runs/history` | Your run history (paginated) |
-| GET | `/api/runs/:id/trail` | GPS trail for map replay |
+
+| Method | Endpoint              | Description                         |
+| ------ | --------------------- | ----------------------------------- |
+| POST   | `/api/runs`           | Save a completed run with GPS trail |
+| GET    | `/api/runs/history`   | Your run history (paginated)        |
+| GET    | `/api/runs/:id/trail` | GPS trail for map replay            |
 
 ### Leaderboard
-| Method | Endpoint | Description |
-|---|---|---|
-| GET | `/api/leaderboard/daily` | Today's top runners |
-| GET | `/api/leaderboard/alltime` | All-time champions |
-| GET | `/api/leaderboard/my-rank` | Your rank on both boards |
+
+| Method | Endpoint                   | Description              |
+| ------ | -------------------------- | ------------------------ |
+| GET    | `/api/leaderboard/daily`   | Today's top runners      |
+| GET    | `/api/leaderboard/alltime` | All-time champions       |
+| GET    | `/api/leaderboard/my-rank` | Your rank on both boards |
 
 ### Users
-| Method | Endpoint | Description |
-|---|---|---|
-| GET | `/api/users/profile` | Full profile + today's laps |
-| GET | `/api/users/:roll/public` | Anyone's public profile |
+
+| Method | Endpoint                  | Description                 |
+| ------ | ------------------------- | --------------------------- |
+| GET    | `/api/users/profile`      | Full profile + today's laps |
+| GET    | `/api/users/:roll/public` | Anyone's public profile     |
 
 ---
 
